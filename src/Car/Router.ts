@@ -1,18 +1,21 @@
 ﻿import { Request, Response } from "express";
-//import express = require("express");
 import { MainController } from "../Car/Controller";
+import { CarMiddleware } from "./Middleware";
 
 export class CarRoutes {
     public mainController: MainController = new MainController();
+    public carMiddleware: CarMiddleware = new CarMiddleware();
 
     public routes(app): void {
 
-        app.route('/parking/:parkingId/cars')
+        app.route('/cars')
+            .post(this.carMiddleware.CarEntityChecking, this.mainController.addCar)
             .get(this.mainController.getAllCars)
-            .post(this.mainController.addNewCar)
-
-        app.route('/parking/:parkingId/cars/:carsId')
-            .delete(this.mainController.deleteCar)
+            
+        app.route('/cars/:carId')
+            .get(this.carMiddleware.CarIdChecking, this.mainController.getCar)
+            .delete(this.carMiddleware.CarIdChecking, this.mainController.deleteCar)
+            .put(this.carMiddleware.CarEntityChecking, this.mainController.updateCar)         
 
     }
 }

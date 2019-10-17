@@ -4,24 +4,30 @@ import { CarSchema } from "../Car/module";
 
 const Car = mongoose.model('Car', CarSchema);
 
-export class MainController {
+export class MainController {    
 
-    public addNewCar(req: Request, res: Response) {  
+    public async addCar(req: Request, res: Response) {
         let newCar = new Car(req.body);
-        newCar.save((err, car) => {
-            if (err) {
-                res.send(err);
-            }
-            res.json(car);
-        });
+        const addCar = await newCar.save();
+        return res.status(200).json(addCar);
     }
 
-    public deleteCar(req: Request, res: Response) {
-        Car.remove({ _id: req.params.parkingId }, (err) => {
+    public async deleteCar(req: Request, res: Response) {        
+        await Car.remove({ _id: req.params.carId }, (err) => {
             if (err) {
                 res.send(err);
-            }
-            res.json({ message: 'Car successfully deleted!' });
+            }         
+        });
+        return res.status(200).json({ message: 'Car successfully deleted!' });
+    }
+
+    public getCar(req: Request, res: Response) {
+        Car.findById(req.body.carId, (err, car) => {
+            if (err) {
+                res.send(err)
+                res.json({ message: 'There isnt any car!!!' })
+            }   
+            return res.status(200).json(car);
         });
     }
 
@@ -30,7 +36,16 @@ export class MainController {
             if (err) {
                 res.send(err);
             }
-            res.json(car);
+            res.status(200).json(car);
         });
     }
+
+    public updateCar(req: Request, res: Response) {                  
+        Car.findOneAndUpdate({ _id: req.params.carId }, req.body, { new: true }, (err, car) => {
+            if (err) {
+                res.send(err);
+            }
+            res.status(201).json(car);
+        });  
+    }   
 }

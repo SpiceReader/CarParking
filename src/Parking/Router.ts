@@ -1,23 +1,26 @@
 ﻿import { Request, Response } from "express";
-//import express = require("express");
-import { MainController } from "../Parking/Controller";
+import { ParkingController } from "../Parking/Controller";
+import { ParkingMiddleware } from "../Parking/Middlewares"
 
 export class ParkingRoutes {
-
-    public mainController: MainController = new MainController();
+    public parkingController: ParkingController = new ParkingController();
+    public parkingMiddleware: ParkingMiddleware = new ParkingMiddleware();
 
 
     public routes(app): void {
                    
         app.route('/parking')
-            .post(this.mainController.addNewParking)
-            .get(this.mainController.getAllParkings)
+            .post(this.parkingMiddleware.ParkingEntityChecking, this.parkingController.addNewParking)
+            .get(this.parkingController.getAllParkings)
             
-        app.route('/parking/:parkingId')
-            .put(this.mainController.updateParking)
-            .get(this.mainController.getParkingWithID)
-            .delete(this.mainController.deleteParking)                          
-
+        app.route('/parking/:parkingId')           
+            .get(this.parkingMiddleware.ParkingIdChecking, this.parkingController.getParkingWithID)
+            .delete(this.parkingMiddleware.ParkingIdChecking, this.parkingController.deleteParking)     
+        
+        app.route('/parking/:parkingId/cars/:carId')
+            .put(this.parkingMiddleware.ParkingIdAndCarIdChecking, this.parkingController.updateParking_AddCar)
+            .delete(this.parkingMiddleware.ParkingIdAndCarIdChecking, this.parkingController.updateParking_DeleteCar)
+            
     }  
 }
 

@@ -4,8 +4,7 @@ const Schema = mongoose.Schema;
 
 export const ParkingSchema = new Schema({
     cars: {
-        type: [Array],
-        default: undefined
+        type: Array,       
     },
     type: {
         type: String
@@ -13,8 +12,10 @@ export const ParkingSchema = new Schema({
     capacity: {
         type: Number
     },
-    working_time: {
-        type: Date,
-        default: Date.now   
+    workingTimeStart: {
+        type: Date,   
+    },
+    workingTimeEnd: {
+        type: Date       
     }
 });
