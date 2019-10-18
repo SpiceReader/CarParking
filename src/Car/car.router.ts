@@ -1,6 +1,6 @@
 ﻿import { Request, Response } from "express";
-import { MainController } from "../Car/Controller";
-import { CarMiddleware } from "./Middleware";
+import { MainController } from "./car.controller";
+import { CarMiddleware } from "./car.middlewares";
 
 export class CarRoutes {
     public mainController: MainController = new MainController();

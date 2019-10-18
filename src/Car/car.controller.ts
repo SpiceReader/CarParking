@@ -1,6 +1,6 @@
 ﻿import * as mongoose from 'mongoose';
 import { Request, Response, NextFunction } from "express";
-import { CarSchema } from "../Car/module";
+import { CarSchema } from "./car.model";
 
 const Car = mongoose.model('Car', CarSchema);
 
@@ -31,7 +31,7 @@ export class MainController {
         });
     }
 
-    public async getAllCars(req: Request, res: Response) {
+    public getAllCars(req: Request, res: Response) {
         Car.find({}, (err, car) => {
             if (err) {
                 res.send(err);

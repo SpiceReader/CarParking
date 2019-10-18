@@ -1,16 +1,17 @@
 ﻿import * as mongoose from 'mongoose';
 import * as express from "express";
 import * as bodyParser from "body-parser";
-import { ParkingRoutes } from "./Parking/Router";
-import { CarRoutes } from "./Car/Router";
+import { ParkingRoutes } from "./Parking/parking.router";
+import { CarRoutes } from "./Car/car.router";
 
-
-class App {
+// переименовать класс в HttpServer и сам файл, и создать main.ts 
+// в названии parking.controlle  и тд названия файлов с малень буквы
+export class HTTPServer { 
     public app: express.Application;
     public routeCar: CarRoutes = new CarRoutes();
     public routeParking: ParkingRoutes = new ParkingRoutes();
     public mongoUrl: string = 'mongodb://localhost/database';
-
+// создать метод create static который создает инстанс класса и вызывать метод configure()
     constructor() {
         this.app = express();  
         this.config();
@@ -31,8 +32,12 @@ class App {
             .then(() => console.log('Database working!!!'))
             .catch(e => console.log(e))
     }
+
+    static create (port: number): any {
+        const server = new HTTPServer(port);
+        server.config();
+        return server;
+    }
 }
 
-export default new App().app;
-
-
+export default new HTTPServer().app;
