@@ -31,7 +31,7 @@ export class MainController {
         });
     }
 
-    public getAllCars(req: Request, res: Response) {
+    public async getAllCars(req: Request, res: Response) {
         Car.find({}, (err, car) => {
             if (err) {
                 res.send(err);
