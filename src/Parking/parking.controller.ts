@@ -1,11 +1,12 @@
 ﻿import * as mongoose from 'mongoose';
 import { Request, Response, NextFunction } from "express";
-import { ParkingSchema } from "../Parking/module";
-import { CarSchema } from "../Car/module";
-import { ParkingService } from "../Parking/Service";
+import { ParkingSchema } from "./parking.model";
+import { CarSchema } from "../Car/car.model";
+import { ParkingService } from "./parking.service";
 
 const Parking = mongoose.model('Parking', ParkingSchema);
 const Car = mongoose.model('Car', CarSchema);
+
 
 export class ParkingController {
     public parking: ParkingService = new ParkingService();
@@ -13,7 +14,7 @@ export class ParkingController {
     public async addNewParking(req: Request, res: Response) {            
         let newParking = new Parking(req.body);
         const parking = await newParking.save();
-        return res.status(200).json(parking);
+        return parking;
     }
 
     public getParkingWithID(req: Request, res: Response) {

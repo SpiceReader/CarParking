@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose'
-import { ParkingSchema } from './module'
+import { ParkingSchema } from './parking.model'
 
 const Parking = mongoose.model('Parking', ParkingSchema);
 

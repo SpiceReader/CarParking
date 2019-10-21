@@ -1,6 +1,6 @@
 ﻿import { Request, Response } from "express";
-import { ParkingController } from "../Parking/Controller";
-import { ParkingMiddleware } from "../Parking/Middlewares"
+import { ParkingController } from "./parking.controller";
+import { ParkingMiddleware } from "./parking.middlewares"
 
 export class ParkingRoutes {
     public parkingController: ParkingController = new ParkingController();
