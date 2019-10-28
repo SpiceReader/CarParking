@@ -21,6 +21,6 @@ export const ParkingSchema = new Schema({
     }
 });
 
-const Car = mongoose.model<Interfaces.Document.Parking, Interfaces.Model.Parking>('Parking', ParkingSchema);
+const Parking = mongoose.model<Interfaces.Document.Parking, Interfaces.Model.Parking>('Parking', ParkingSchema);
 
-export default Car;
+export default Parking;

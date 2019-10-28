@@ -7,6 +7,8 @@ import * as fs from 'fs';
 
 const PORT = 3000;
 const mongoUrl: string = 'mongodb://localhost/database';
+const routeCar: CarRoutes = new CarRoutes();
+const routeParking: ParkingRoutes = new ParkingRoutes();
 
 /*const httpsOptions = {
     key: fs.readFileSync('./config/key.pem'),
@@ -15,14 +17,12 @@ const mongoUrl: string = 'mongodb://localhost/database';
 const Server = async function() {
 
     const DB = await DBlauncher.launch()
-    DB.setup();
+    await DB.setup();
 
     const server = await HTTPServer.create(PORT);
-
-    server.addRoutes(CarRoutes);
-    server.addRoutes(ParkingRoutes);
-    //server.mongoSetup(mongoUrl);
-    await server.start()
+    server.addRouters(routeCar);
+    server.addRouters(routeParking);
+    await server.start();
     console.log('Server is started!');
 };
 

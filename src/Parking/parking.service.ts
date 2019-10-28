@@ -1,11 +1,52 @@
-import * as mongoose from 'mongoose'
 import { ParkingSchema } from './parking.model'
+import Parking from './parking.model';
+import * as Interfaces from './parking.interface';
+import mongoose from 'mongoose';
 
-const Parking = mongoose.model('Parking', ParkingSchema);
+//const Parking = mongoose.model('Parking', ParkingSchema);
 
 export class ParkingService {
 
-    public addCar_toParking(carId: string, parkingId: string) {
+    public async addNewParking(type: string, capacity: number, 
+        workingTimeStart: Date, workingTimeEnd: Date): Promise<any> {            
+        let newParking = new Parking({
+            cars: [],
+            type: type,
+            capacity: capacity,
+            workingTimeStart: workingTimeStart,
+            workingTimeEnd: workingTimeEnd
+        });
+        const parking = await newParking.save();
+        return parking;
+    }
+
+    public async getParkingWithID(parkingID: string)
+    : Promise<Interfaces.DTO.Parking> {
+        const parking = await Parking.findById(parkingID, (err) => {
+            if (err) {
+                return err;
+            }
+        });
+        return parking;
+    }
+
+    public async deleteParkingService (id: string,)
+    : Promise<Interfaces.DTO.Parking> {
+        const deletedParking = await Parking.findByIdAndDelete(id);
+        return deletedParking;
+    }
+
+    public async getAllParkings(): Promise<Interfaces.DTO.Parking[]> {
+        const parkings = await Parking.find({}, (err) => {
+            if (err) {
+                return err;
+            }
+        });
+        return parkings;
+    }
+
+
+    public addCar_toParking(carId: string, parkingId: string){
         const parking = Parking.findById(parkingId);
 
         const currentTime = new Date();
@@ -27,7 +68,7 @@ export class ParkingService {
     }
     
 
-    public async deleteCar_fromParking(carId: string, parkingId: string) {
+    public async deleteCar_fromParking(carId: string, parkingId: string){
         let parking = await Parking.findById(parkingId);
 
         const currentTime = new Date();
@@ -53,5 +94,4 @@ export class ParkingService {
         }
         return {message: 'Car is not deleted!!!'}
     }
-   
 }
